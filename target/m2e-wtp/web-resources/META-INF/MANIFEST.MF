@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Built-By: g5
+Build-Jdk: 10.0.2
+Specification-Title: Quickstart: kitchensink
+Specification-Version: 7.2
+Specification-Vendor: JBoss by Red Hat
+Implementation-Title: Quickstart: kitchensink
+Implementation-Version: 7.2.0.GA
+Implementation-Vendor-Id: org.jboss.eap.quickstarts
+Implementation-Vendor: JBoss by Red Hat
+Created-By: Maven Integration for Eclipse
+Implementation-URL: http://www.jboss.org/jdf/quickstarts/get-started/k
+ itchensink/
+Java-Vendor: Oracle Corporation
+Java-Version: 10.0.2
+Os-Arch: amd64
+Os-Name: Linux
+Os-Version: 4.9.0-8-amd64
+Scm-Connection: scm:git:git@github.com:jboss/jboss-parent-pom.git/quic
+ kstart-parent/kitchensink
+Scm-Revision: 
+Scm-Url: http://github.com/jboss/jboss-parent-pom/quickstart-parent/ki
+ tchensink
+
