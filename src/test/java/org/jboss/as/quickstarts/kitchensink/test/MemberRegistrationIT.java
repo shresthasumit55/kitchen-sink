@@ -17,6 +17,8 @@
 package org.jboss.as.quickstarts.kitchensink.test;
 
 import static org.junit.Assert.assertNotNull;
+import java.util.Date;
+import java.text.SimpleDateFormat;  
 
 import java.util.logging.Logger;
 
@@ -55,10 +57,15 @@ public class MemberRegistrationTest {
 
     @Test
     public void testRegister() throws Exception {
+    	
+    	 String sDate1="31/12/1998";  
+	    Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);  
         Member newMember = new Member();
         newMember.setName("Jane Doe");
         newMember.setEmail("jane@mailinator.com");
-        newMember.setPhoneNumber("2125551234");
+        //newMember.setPhoneNumber("2125551234");
+        newMember.setUniversity("Baylor");
+        newMember.setBirthDate(date1);
         memberRegistration.register(newMember);
         assertNotNull(newMember.getId());
         log.info(newMember.getName() + " was persisted with id " + newMember.getId());
