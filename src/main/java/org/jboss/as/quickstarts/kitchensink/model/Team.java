@@ -51,7 +51,10 @@ public class Team implements Serializable {
     private Person coach;
 
     @OneToOne
-    private Team clonedTeam;
+    private Team clonedTeamFrom;
+    
+    @OneToOne
+    private Team clonedTeamTo;
     
     public Team() {
 		super();
@@ -114,18 +117,42 @@ public class Team implements Serializable {
         this.coach = coach;
     }
 
-    public Team getClonedTeam() {
-        return clonedTeam;
-    }
+    public Team getClonedTeamFrom() {
+		return clonedTeamFrom;
+	}
 
-    public void setClonedTeam(Team clonedTeam) {
-        this.clonedTeam = clonedTeam;
-    }
+	public void setClonedTeamFrom(Team clonedTeamFrom) {
+		this.clonedTeamFrom = clonedTeamFrom;
+	}
 
-    public Team(String name, Integer rank) {
+	public Team getClonedTeamTo() {
+		return clonedTeamTo;
+	}
+
+	public void setClonedTeamTo(Team clonedTeamTo) {
+		this.clonedTeamTo = clonedTeamTo;
+	}
+
+	public Team(String name, Integer rank) {
         this.name = name;
         this.rank = rank;
         this.state = State.Pending.toString();
     }
+    
+    public Team(Team otherTeam) {
+    	
+    	super();
+		this.id = otherTeam.getId();
+		this.name = otherTeam.getName();
+		this.rank = otherTeam.getRank();
+		this.state = State.Pending.toString();
+		this.participatingContest = otherTeam.getParticipatingContest();
+		this.members = otherTeam.getMembers();
+		this.coach = otherTeam.getCoach();
+    	
+    }
+
+    
+    
 }
 
