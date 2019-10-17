@@ -17,12 +17,21 @@
 package org.jboss.as.quickstarts.kitchensink.model;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -39,7 +48,7 @@ import javax.validation.constraints.NotEmpty;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Member implements Serializable {
 
-    @Id
+ /*   @Id
     @GeneratedValue
     private Long id;
 
@@ -89,5 +98,112 @@ public class Member implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    */
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+
+    @Column
+    private String email;
+
+    @Column
+    private String name;
+
+    @Column
+    private String university;
+
+
+    @ManyToMany(mappedBy = "members", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Team> participatingTeams;
+
+
+    @ManyToMany(mappedBy = "managers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Contest> managedContest;
+
+
+    @OneToMany(mappedBy = "coach",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Team> coachedTeams;
+
+
+    public Member() {
+		super();
+	}
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Team> getParticipatingTeams() {
+        return participatingTeams;
+    }
+
+    public void setParticipatingTeams(List<Team> participatingTeams) {
+        this.participatingTeams = participatingTeams;
+    }
+
+    public Set<Contest> getManagedContest() {
+        return managedContest;
+    }
+
+    public void setManagedContest(Set<Contest> managedContest) {
+        this.managedContest = managedContest;
+    }
+
+    public Set<Team> getCoachedTeams() {
+        return coachedTeams;
+    }
+
+    public void setCoachedTeams(Set<Team> coachedTeams) {
+        this.coachedTeams = coachedTeams;
+    }
+
+    public Member(Date birthDate, String email, String name, String university) {
+        this.birthDate = birthDate;
+        this.email = email;
+        this.name = name;
+        this.university = university;
     }
 }
