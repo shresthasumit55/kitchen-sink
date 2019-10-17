@@ -29,7 +29,7 @@
         </div>
 
         <h:form id="reg">
-            <h2>Member Registration</h2>
+            <h2>Person Registration</h2>
             <p>Enforces annotation-based constraints defined on the
                 model class.</p>
             <h:panelGrid columns="3" columnClasses="titleCell">
@@ -41,10 +41,18 @@
                 <h:inputText id="email" value="#{newMember.email}" />
                 <h:message for="email" errorClass="invalid" />
 
-                <h:outputLabel for="phoneNumber" value="Phone #:" />
-                <h:inputText id="phoneNumber"
-                    value="#{newMember.phoneNumber}" />
-                <h:message for="phoneNumber" errorClass="invalid" />
+                <h:outputLabel for="birthDate" value="DOB:" />
+                <h:inputText id="birthDate"
+                    value="#{newMember.birthDate}" placeholder="M-d-yyyy">
+                    <f:convertDateTime pattern="M-d-yyyy" />
+                    </h:inputText>
+                    
+                <h:message for="birthDate" errorClass="invalid" />
+                
+                <h:outputLabel for="university" value="University:" />
+                <h:inputText id="university"
+                    value="#{newMember.university}" />
+                <h:message for="university" errorClass="invalid" />
             </h:panelGrid>
 
             <p>
@@ -78,8 +86,12 @@
                 #{_member.email}
             </h:column>
             <h:column>
-                <f:facet name="header">Phone #</f:facet>
-                #{_member.phoneNumber}
+                <f:facet name="header">University</f:facet>
+                #{_member.university}
+            </h:column>
+            <h:column>
+                <f:facet name="header">DOB</f:facet>
+                #{_member.birthDate}
             </h:column>
             <h:column>
                 <f:facet name="header">REST URL</f:facet>
