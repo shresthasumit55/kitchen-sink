@@ -35,15 +35,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class MemberRegistrationIT {
+public class MemberRegistrationTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-            .addClasses(Member.class, MemberRegistration.class, Resources.class)
+            .addClasses(Member.class, MemberRegistration.class, Resources.class, Logger.class)
             .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             // Deploy our test datasource
             .addAsWebInfResource("test-ds.xml");
+           
     }
 
     @Inject
