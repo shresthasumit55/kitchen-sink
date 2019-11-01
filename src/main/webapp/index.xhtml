@@ -32,7 +32,9 @@
             <h2>Person Registration</h2>
             <p>Enforces annotation-based constraints defined on the
                 model class.</p>
+                
             <h:panelGrid columns="3" columnClasses="titleCell">
+            
                 <h:outputLabel for="name" value="Name:" />
                 <h:inputText id="name" value="#{newMember.name}" />
                 <h:message for="name" errorClass="invalid" />
@@ -43,8 +45,10 @@
 
                 <h:outputLabel for="birthDate" value="DOB:" />
                 <h:inputText id="birthDate"
-                    value="#{newMember.birthDate}" placeholder="M-d-yyyy">
-                    <f:convertDateTime pattern="M-d-yyyy" />
+                   value="#{newMember.birthDate}" >
+                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="GMT+2"  /> />>
+                    <!--<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="GMT+2" /> />>-->
+                
                     </h:inputText>
                     
                 <h:message for="birthDate" errorClass="invalid" />
@@ -59,7 +63,9 @@
                 <h:panelGrid columns="2">
                     <h:commandButton id="register"
                         action="#{memberController.register}"
-                        value="Register" styleClass="register" />
+                        value="Submit" styleClass="register" >
+                        <f:param name="uniqueId2" value="#{newMember.id}"/>
+                        </h:commandButton>
                     <h:messages styleClass="messages"
                         errorClass="invalid" infoClass="valid"
                         warnClass="warning" globalOnly="true" />
@@ -98,6 +104,23 @@
                 <a
                     href="#{request.contextPath}/rest/members/#{_member.id}">/rest/members/#{_member.id}</a>
             </h:column>
+            <h:column>
+             <f:facet name="header">Delete URL</f:facet>
+                <a
+                    href="#{request.contextPath}/rest/members/delete/#{_member.id}">Delete</a>
+            </h:column>
+            <h:column>
+            <h:form>
+             <h:commandButton id="edit" process="@this"
+                        action="#{memberController.edit()}"
+                        value="Edit">
+                        <f:param name="uniqueId" value="#{_member.id}"/>
+                        </h:commandButton>
+                        
+                 </h:form>   
+            </h:column>
+    
+              
             <f:facet name="footer">
             REST URL for all members: <a
                     href="#{request.contextPath}/rest/members">/rest/members</a>
