@@ -16,6 +16,9 @@
  */
 package org.jboss.as.quickstarts.kitchensink.controller;
 
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -33,6 +36,9 @@ import org.jboss.as.quickstarts.kitchensink.service.MemberRegistration;
 // http://www.cdi-spec.org/faq/#accordion6
 @Model
 public class MemberController {
+	
+	@Inject
+    private Logger log;
 
     @Inject
     private FacesContext facesContext;
@@ -47,11 +53,21 @@ public class MemberController {
     @PostConstruct
     public void initNewMember() {
         newMember = new Member();
+        newMember.setId(Long.valueOf(-1));
     }
 
     public void register() throws Exception {
         try {
+        	Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    		String idString = "";
+    		idString = params.get("uniqueId2");
+    		if (Integer.valueOf(idString)!=-1)
+    			newMember.setId(Long.valueOf(idString));
+    		else
+    			newMember.setId(null);
+
             memberRegistration.register(newMember);
+            
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             facesContext.addMessage(null, m);
             initNewMember();
@@ -60,6 +76,26 @@ public class MemberController {
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
             facesContext.addMessage(null, m);
         }
+    }
+    
+    public void edit() throws Exception{
+    	try {
+    		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    		String id = params.get("uniqueId");
+    		//log.info("Updating a member: "+ id);
+    		newMember = memberRegistration.findById(Long.valueOf(id));
+    		newMember.setId(Long.valueOf(id));
+    		//memberRegistration.editMember(Long.valueOf(id));
+
+    		//memberRegistration.delete(member);
+    		FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Edit!", "Edit successful");
+            facesContext.addMessage(null, m);
+    	}
+    	catch (Exception e) {
+    		  String errorMessage = getRootErrorMessage(e);
+              FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Delete unsuccessful");
+              facesContext.addMessage(null, m);
+    	}
     }
 
     private String getRootErrorMessage(Exception e) {
