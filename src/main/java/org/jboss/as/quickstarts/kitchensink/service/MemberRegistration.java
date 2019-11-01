@@ -22,6 +22,11 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
+import java.util.Date;
 import java.util.logging.Logger;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
@@ -33,13 +38,77 @@ public class MemberRegistration {
 
     @Inject
     private EntityManager em;
-
+    
     @Inject
     private Event<Member> memberEventSrc;
+    
+    public void editMember(Long id) throws Exception{
+    	 Member newMember = em.find(Member.class, id);
+    	 
+    	 log.info("set info" + newMember.getId());
+    	 newMember.setEmail("abcdef.gmail.com");
+    	 em.merge(newMember);
+  	   em.flush();
+    }
 
     public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
-        em.persist(member);
+    	String namePrev , emailPrev,  uniPrev;
+    	Date dobPrev, dobAfter;
+    	String nameAfter, emailAfter, uniAfter;
+    	 
+    			
+    	if (member.getId()!=null) {
+    		Member oldMember;
+    		oldMember = findById(Long.valueOf(member.getId()));
+        	
+        	namePrev = oldMember.getName();
+        	
+        	emailPrev = oldMember.getEmail();
+        	dobPrev = oldMember.getBirthDate();  
+        	uniPrev = oldMember.getUniversity();
+    		em.merge(member);
+    		
+    	nameAfter = member.getName();
+    	emailAfter = member.getEmail();
+    	dobAfter = member.getBirthDate();
+    	uniAfter = member.getUniversity();
+    	
+    	 log.info("Updating a member: "+(member.getId()));
+         if (!namePrev.equals(nameAfter)){
+         	 log.info("Name:" + namePrev + "-> " +nameAfter);
+         }
+         if(!emailPrev.equals(emailAfter)) {
+         	log.info("Email:" + emailPrev + "-> " +emailAfter);
+         }
+
+         if(!uniPrev.equals(uniAfter) ) {
+         	log.info("University:" + uniPrev + "-> " +uniAfter);
+         }
+
+         if(!dobPrev.equals(dobAfter) ) {
+         	log.info("Date of Birth:" + dobPrev + "-> " +dobAfter);
+         }
+
+
+    	}
+    	else {
+    		em.persist(member); 
+
+    	}
+    	        
         memberEventSrc.fire(member);
+               
+    }
+    
+    public Member findById(Long id) {
+    	return em.find(Member.class, id);
+    }
+    
+    public void delete(Member member ) throws Exception {
+    	  log.info("Deleting " + member.getName());
+    	  System.out.println("I am here");
+    	  em.remove(member);
+          
+          memberEventSrc.fire(member);
     }
 }
